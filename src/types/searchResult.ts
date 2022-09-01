@@ -45,5 +45,7 @@ export interface RootObject {
   snippet: Snippet;
   statistics?: {
     subscriberCount?: string;
+    viewCount?: string;
+    likeCount?: string;
   };
 }

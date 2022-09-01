@@ -18,7 +18,7 @@ type AppProps = {
 const VideoCard = ({ video: { id: { videoId }, snippet } }: AppProps) => (
   <Card
     sx={{
-      width: { xs: "100%", sm: "358px", md: "320px" },
+      width: { xs: "300px", sm: "358px", md: "320px" },
       boxShadow: "none",
       borderRadius: 0,
     }}

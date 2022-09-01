@@ -1,22 +1,25 @@
-import React from "react";
 import { RootObject as item } from "@/types/searchResult";
 import { Box, Stack } from "@mui/material";
 import ChannelCard from "./ChannelCard";
 import VideoCard from "./VideoCard";
+import Loader from "./Loader";
 
 type AppProps = {
   videos: item[];
+  direction?: "column" | "row";
 };
 
 const Videos = (
-  { videos }: AppProps,
+  { videos, direction }: AppProps,
 ) => {
+  if (!videos?.length) return <Loader />;
+
   return (
     <Stack
-      direction="row"
+      direction={direction || "row"}
       flexWrap="wrap"
-      justifyContent="start"
-      alignItems="start"
+      justifyContent="center"
+      alignItems="center"
       gap={2}
     >
       {videos.map((item, idx) => (
