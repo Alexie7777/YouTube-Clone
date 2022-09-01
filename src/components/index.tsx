@@ -9,3 +9,4 @@ export { default as VideoDetail } from "./VideoDetail";
 export { default as SearchFeed } from "./SearchFeed";
 export { default as Videos } from "./Videos";
 export { default as SideBar } from "./SideBar";
+export { default as Warning } from "./Warning";
