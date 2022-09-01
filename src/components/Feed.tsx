@@ -1,5 +1,12 @@
 import { fetchFromAPI } from "@/utils/fetchFromApi";
-import { Box, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import Videos from "./Videos";
@@ -7,6 +14,8 @@ import Videos from "./Videos";
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
   const [videos, setVideos] = useState(null);
+  const [open, setOpen] = useState(false);
+  let msg = "";
 
   useEffect(() => {
     setVideos(null);
@@ -14,10 +23,19 @@ const Feed = () => {
     fetchFromAPI(`search?part=snippet&q=${selectedCategory}`)
       .then((data) => {
         setVideos(data.items);
+      }).catch((err) => {
+        msg = err.msg;
+        setOpen(true);
       });
   }, [selectedCategory]);
 
-  console.log(videos);
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
@@ -63,6 +81,11 @@ const Feed = () => {
 
         {videos && <Videos videos={videos} />}
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {msg || "网络错误"}, 请稍后重试
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 };

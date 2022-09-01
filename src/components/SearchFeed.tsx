@@ -1,17 +1,28 @@
 import { fetchFromAPI } from "@/utils/fetchFromApi";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Videos from "./Videos";
 
 const SearchFeed = () => {
   const [videos, setVideos] = useState(null);
+  const [open, setOpen] = useState(false);
   const { searchTerm } = useParams();
+  let msg = "";
 
   useEffect(() => {
     fetchFromAPI(`search?part=snippet&q=${searchTerm}`)
-      .then((data) => setVideos(data.items));
+      .then((data) => setVideos(data.items))
+      .catch((err) => {
+        msg = err.msg;
+        setOpen(true);
+      });
   }, [searchTerm]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box
       p={2}
@@ -34,6 +45,11 @@ const SearchFeed = () => {
         <Box sx={{ mr: { sm: "100px" } }} />
         {videos && <Videos videos={videos} />}
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {msg || "网络错误"}, 请稍后重试
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
